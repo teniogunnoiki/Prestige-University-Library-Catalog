@@ -1,0 +1,47 @@
+import java.util.Date;
+public abstract class LibraryItem {
+    private int itemID;
+    private String title;
+    private String author;
+    private Date dateEntered = new Date();
+
+    public LibraryItem(){}
+    public LibraryItem(int itemID, String title, String author){
+        this.itemID = itemID;
+        this.title = title;
+        this.author = author;
+
+    }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public Date getDateEntered() {
+        return dateEntered;
+    }
+
+    public void setDateEntered(Date dateEntered) {
+        this.dateEntered = dateEntered;
+    }
+}
