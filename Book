@@ -1,0 +1,36 @@
+public class Book extends LibraryItem{
+    private String publishDate;
+    private String category;
+    private String description;
+
+    public Book(int itemID, String title, String author, String publishDate, String category, String description) {
+        super(itemID, title, author);
+        this.publishDate = publishDate;
+        this.category = category;
+        this.description = description;
+    }
+
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+}
