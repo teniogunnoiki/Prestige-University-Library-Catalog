@@ -1,0 +1,13 @@
+import java.util.ArrayList;
+public class LibraryCatalog {
+    private String librarySession;
+    private ArrayList<Object> items = new ArrayList<>();
+
+    public LibraryCatalog(String librarySession){
+        this.librarySession = librarySession;
+    }
+
+    public void addItem(LibraryItem item){
+        items.add(item);
+    }
+}
