@@ -1,0 +1,13 @@
+
+public class Video extends LibraryItem {
+    private double duration;
+
+    public Video(double duration) {
+        this.duration = duration;
+    }
+
+    public Video(int itemID, String title, double duration) {
+        super(itemID, title);
+        this.duration = duration;
+    }
+}
