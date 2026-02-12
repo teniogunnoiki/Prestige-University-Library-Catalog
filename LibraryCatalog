@@ -3,11 +3,25 @@ public class LibraryCatalog {
     private String librarySession;
     private ArrayList<Object> items = new ArrayList<>();
 
-    public LibraryCatalog(String librarySession){
+    public LibraryCatalog(String librarySession) {
         this.librarySession = librarySession;
     }
 
-    public void addItem(LibraryItem item){
+    public void addItem(LibraryItem item) {
         items.add(item);
+    }
+
+    public void displayLibrary() {
+        for (Object item : items) {
+            if (item instanceof Book) {
+                System.out.println("Book: " + item);
+            }
+            else if(item instanceof Video){
+                System.out.println("Video: " + item);
+            }
+            else if(item instanceof Audio){
+                System.out.println("Audio: " + item);
+            }
+        }
     }
 }
