@@ -44,5 +44,11 @@ public class Book extends LibraryItem{
     public boolean isAvailable(){
         return this.available;
     }
+    @Override
+    public String getDetails(){
+        return "Book Name: " + getTitle() + " | Author: " + author + " | Publish Date: " + publishDate + "| Category: " 
+        + category + "| Description: " + description + "| Avalibility: " + available;
+    }
 }
-}
+
+ 

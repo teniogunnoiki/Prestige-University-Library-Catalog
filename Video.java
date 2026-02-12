@@ -10,4 +10,8 @@ public class Video extends LibraryItem {
         super(itemID, title);
         this.duration = duration;
     }
+    @Override
+    public String getDetails(){
+        return "Video: " + getTitle() + " - " + duration + " minutes";
+    }
 }

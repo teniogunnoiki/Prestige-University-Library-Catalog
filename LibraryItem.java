@@ -36,4 +36,6 @@ public abstract class LibraryItem {
         this.dateEntered = dateEntered;
     }
 
+    public abstract String getDetails();
+
 }
