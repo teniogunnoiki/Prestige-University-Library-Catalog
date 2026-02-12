@@ -2,12 +2,17 @@ public class Book extends LibraryItem{
     private String publishDate;
     private String category;
     private String description;
+    private String author;
+    private boolean available;
 
     public Book(int itemID, String title, String author, String publishDate, String category, String description) {
-        super(itemID, title, author);
+        super(itemID, title);
+        this.author = author;
         this.publishDate = publishDate;
         this.category = category;
         this.description = description;
+        this.available = true;
+
     }
 
     public String getPublishDate() {
@@ -33,4 +38,11 @@ public class Book extends LibraryItem{
     public void setDescription(String description) {
         this.description = description;
     }
+ public void removeFromCatalog(){
+        this.available = false;
+    }
+    public boolean isAvailable(){
+        return this.available;
+    }
+}
 }
