@@ -2,12 +2,13 @@ import java.util.Date;
 public abstract class LibraryItem {
     private int itemID;
     private String title;
-    private Date dateEntered = new Date();
+    private Date dateEntered;
 
     public LibraryItem(){}
     public LibraryItem(int itemID, String title){
         this.itemID = itemID;
         this.title = title;
+        this.dateEntered = new Date();
     }
 
     public int getItemID() {
