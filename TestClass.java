@@ -35,7 +35,11 @@ public class TestClass {
         s1.nextLine();
 
         if(choice == 1){
-                System.out.println("");
+                System.out.println("\nBefore Sorting: ");
+                library.displayLibrary();
+
+                library.sortLibrary();
+                System.out.println("\nAfter Sorting (Alphabetical by Type");
                 library.displayLibrary();
         }
         else if(choice == 2){
