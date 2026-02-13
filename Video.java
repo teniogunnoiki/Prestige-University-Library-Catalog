@@ -12,6 +12,6 @@ public class Video extends LibraryItem {
     }
     @Override
     public String getDetails(){
-        return "Video: " + getTitle() + " - " + duration + " minutes";
+        return "Item ID: "+ getItemID() +" | Video: " + getTitle() + " - " + duration + " minutes";
     }
 }
