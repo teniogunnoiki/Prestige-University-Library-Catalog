@@ -1,5 +1,5 @@
 import java.util.Date;
-public abstract class LibraryItem {
+public abstract class LibraryItem implements Comparable<LibraryItem>{
     private int itemID;
     private String title;
     private Date dateEntered;
@@ -37,5 +37,16 @@ public abstract class LibraryItem {
     }
 
     public abstract String getDetails();
+
+    @Override
+    public int compareTo(LibraryItem other){
+        if(this instanceof Book && other instanceof Video){
+            return -1;
+        }
+        if(this instanceof Video && other instanceof Book){
+            return 1;
+        }
+        return Integer.compare(this.itemID, other.itemID);
+    }
 
 }
