@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class LibraryCatalog<T extends LibraryItem> {
     private String librarySession;
@@ -28,4 +29,7 @@ public class LibraryCatalog<T extends LibraryItem> {
         System.out.println("Item not found.");
     }
 }
+    public void sortLibrary(){
+        Collections.sort(items);
+    }
 }
