@@ -4,6 +4,14 @@ public class Book extends LibraryItem{
     private String author;
     private boolean available;
 
+    public Book(){
+        super();
+        this.author= "Unknown";
+        this.publishDate = "01/01/XXXX";
+        this.category= "Unknown";
+        this.available= true;
+    }
+
     public Book(int itemID, String title, String author, String publishDate, String category) {
         super(itemID, title);
         this.author = author;
@@ -30,7 +38,7 @@ public class Book extends LibraryItem{
     }
 
 
- public void removeFromCatalog(){
+    public void removeFromCatalog(){
         this.available = false;
     }
     public boolean isAvailable(){
@@ -38,10 +46,9 @@ public class Book extends LibraryItem{
     }
     @Override
     public String getDetails(){
-        return "Item ID: " + getItemID()+ " | Title: " + getTitle() + " | Author: " + author + " | Publish Date: " + publishDate + "| Category: " 
-        + category  + " | Avalibility: " + available;
-        
+        return "Item ID: " + getItemID()+ " | Title: " + getTitle() + " | Author: " + author + " | Publish Date: " + publishDate + "| Category: "
+                + category  + " | Avalibility: " + available;
+
     }
 }
-
  
