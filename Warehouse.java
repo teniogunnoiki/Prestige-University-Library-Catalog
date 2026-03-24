@@ -7,6 +7,11 @@ public class Warehouse {
     private String location;
     private List<Shipment> shipments;
 
+     public Warehouse(){
+        this.warehouseID = 000;
+        this.location = "Unknown";
+        this.shipments = new ArrayList<>();
+    }
     public Warehouse(int warehouseID, String location) {
         this.warehouseID = warehouseID;
         this.location = location;
