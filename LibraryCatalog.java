@@ -6,7 +6,7 @@ public class LibraryCatalog<T extends LibraryItem> {
     private ArrayList<Shipment> shipments = new ArrayList<>();
     private ArrayList<Warehouse> warehouses = new ArrayList<>();
 
-
+    public LibraryCatalog(){this.librarySession = "Unknown";}
     public LibraryCatalog(String librarySession) {
         this.librarySession = librarySession;
     }
