@@ -7,6 +7,13 @@ public class Branch{
     private String location;
     private List<Book> books;
 
+    public Branch(){
+        this.branchID = 000;
+        this.name= "Unknown";
+        this.location = "Unknown";
+        this.books = new ArrayList<>();
+    }
+
     public Branch(int branchID, String name, String location) {
         this.branchID = branchID;
         this.name = name;
@@ -27,7 +34,7 @@ public class Branch{
     }
 
     public void addBooks(Book book) {
-         books.add(book);
+        books.add(book);
     }
 
     public List<Book> getBooks(){
