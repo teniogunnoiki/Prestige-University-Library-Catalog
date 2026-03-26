@@ -179,7 +179,7 @@ public class TestClass {
             }
             //option 7: searching and sorting
             else if (choice == 7) {
-                System.out.println("\nSorting Alphabetically using merge sort");
+              System.out.println("\nSorting Alphabetically using merge sort");
                 List<LibraryItem> sortedItems = SortUtils.mergeSort(library.getAllItems(), SortUtils.compareByTitle);
                 for (LibraryItem item : sortedItems) {
                     System.out.println(item.getDetails());
@@ -191,43 +191,37 @@ public class TestClass {
                 for (LibraryItem item : library.getAllItems()) {
                     System.out.println(item.getDetails());
                 }
-//                SortUtils.quickSort(library.getAllItems(),0, library.getAllItems().size()-1, SortUtils.compareByID);
-//                System.out.print("Are you searching for (1) book or (2)video?");
-//                int ans = s1.nextInt();
-//                s1.nextLine();
-//
-//                ArrayList<LibraryItem> filter = new ArrayList<>();
-//
-//                for(LibraryItem item : library.getAllItems()) {
-//                    if (item instanceof Book) {
-//                        filter.add(item);
-//                    }
-//                    
-//                }
-//
-//                int index = SortUtils.binarySearch(library.getAllItems(), )
-//                if(result != null){
-//                    System.out.println("Item found:");
-//                    System.out.println(result);
-//                } else {
-//                    System.out.println("Item not found.");
-//                }
+
+                SortUtils.quickSort(library.getAllItems(), 0, library.getAllItems().size() - 1, SortUtils.compareByID);
+                System.out.print("Are you searching for (1) book or (2)video? Enter an integer: ");
+                int ans = s1.nextInt();
+                s1.nextLine();
+                ArrayList<LibraryItem> filter = new ArrayList<>();
+                if(ans ==1) {
+                    for (LibraryItem item : library.getAllItems()) {
+                        if (item instanceof Book) {
+                            filter.add(item);
+                        }
+                    }
+                }else if(ans == 2) {
+                    for (LibraryItem item : library.getAllItems()) {
+                        if (item instanceof Video) {
+                            filter.add(item);
+                        }
+                    }
+                }
+                System.out.println("Enter the ID of the Item: ");
+                ans = s1.nextInt();
+                s1.nextLine();
+
+                int index = SortUtils.binarySearch(filter, ans);
+                if (index != -1) {
+                    System.out.println("Found: " + library.getAllItems().get(index));
+                } else {
+                    System.out.println("Item not found.");
+                }
+
             }
-
-
-//                System.out.println("\nSorting Shipments by date using merge sort");
-//                ArrayList<Shipment> sortedShipments = SortUtils.mergeSort(library.getItems(), SortUtils.compareByDate);
-//                for(Shipment item: sortedShipments){
-//                    System.out.println(shipment.getDetails());
-//                }
-//
-//                System.out.println("\nSorting Shipments by date using quick sort");
-//                SortUtils.quickSort(library.getAllItems(),0, library.getAllItems().size()-1, SortUtils.compareByDate);
-//                for(Shipment item: library.getAllItems()){
-//                    System.out.println(item.getDetails());
-//                }
-
-
             // Option 8: Exit program
             else if (choice == 8) {
                 session = false;
