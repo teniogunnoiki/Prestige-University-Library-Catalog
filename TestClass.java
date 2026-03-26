@@ -1,9 +1,11 @@
+import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.ArrayList;
 
 public class TestClass {
 
-    public static void main(String [] args){
+    public static void main(String[] args) {
         Scanner s1 = new Scanner(System.in);  // Scanner for user input
         // Controls main program loop
         boolean session = true;
@@ -11,13 +13,14 @@ public class TestClass {
         // Create library catalog in admin mode
         LibraryCatalog<LibraryItem> library = new LibraryCatalog("Admin Mode");
         Stack<Action> undoStack = new Stack<>();
+        Warehouse warehouse = new Warehouse();
 
         // Add initial book items to catalog
-        library.addItem(new Book(1001,"Five Dialogues", "Plato", "2002", "Physical"));
-        library.addItem(new Book(1002,"Introduction to Programming", "Daniel Liang", "1998", "Digital"));
-        library.addItem(new Book(1003,"Modern Operating Systems", "Andrew S. Tanenbaum", "1992", "Digital"));
-        library.addItem(new Book(1407,"The Essential Bible Companion", "John H Walton", "2006", "Digital"));
-        library.addItem(new Book(1009,"Nicomachean Ethics", "Aristotle", "2009", "Physical"));
+        library.addItem(new Book(1001, "Five Dialogues", "Plato", "2002", "Physical"));
+        library.addItem(new Book(1002, "Introduction to Programming", "Daniel Liang", "1998", "Digital"));
+        library.addItem(new Book(1003, "Modern Operating Systems", "Andrew S. Tanenbaum", "1992", "Digital"));
+        library.addItem(new Book(1407, "The Essential Bible Companion", "John H Walton", "2006", "Digital"));
+        library.addItem(new Book(1009, "Nicomachean Ethics", "Aristotle", "2009", "Physical"));
 
         // Add initial video items to catalog
         library.addItem(new Video(1004, "Harriet", 125));
@@ -27,7 +30,7 @@ public class TestClass {
         library.addItem(new Video(1010, "Harry Potter and the Sorcerer's Stone", 152));
 
         // Main menu loop
-        while(session){
+        while (session) {
 
             // Display menu options
             System.out.println("");
@@ -47,17 +50,22 @@ public class TestClass {
             s1.nextLine(); // Clear input buffer
 
             // Option 1: Display and sort library
-            if(choice == 1){
-                System.out.println("\nBefore Sorting: ");
+            if (choice == 1) {
+                System.out.println("Displaying all books as entered: \n");
                 library.displayLibrary();
 
-                library.sortLibrary(); // Sort alphabetically by type
-
-                System.out.println("\nAfter Sorting (Alphabetical by Type)");
-                library.displayLibrary();
+                System.out.println("\nDisplaying by type: ");
+                for (LibraryItem item : library.getAllItems()) {
+                    if (item instanceof Book) {
+                        item.getDetails();
+                    }
+                    if (item instanceof Video) {
+                        item.getDetails();
+                    }
+                }
             }
             // Option 2: Add new item (Book or Video)
-            else if(choice == 2){
+            else if (choice == 2) {
                 System.out.println("");
                 System.out.println("1. Book");
                 System.out.println("2. Video");
@@ -66,7 +74,7 @@ public class TestClass {
                 s1.nextLine(); // Clear buffer
 
                 // Add Book
-                if(choice1 == 1){
+                if (choice1 == 1) {
                     int lastIndex = 1000 + library.size() + 1; // Generate new ID
 
                     System.out.println("Title of Book: ");
@@ -87,7 +95,7 @@ public class TestClass {
                 }
 
                 // Add Video
-                else if(choice1 == 2){
+                else if (choice1 == 2) {
                     int lastIndex = 1000 + library.size() - 1; // Generate new ID
 
                     System.out.println("Title of Video: ");
@@ -102,7 +110,7 @@ public class TestClass {
                 }
             }
             // Option 3: Remove item by ID
-            else if(choice == 3){
+            else if (choice == 3) {
                 System.out.println("");
                 library.displayLibrary();
 
@@ -113,8 +121,8 @@ public class TestClass {
                 undoStack.push(new Action("REMOVE_ITEM", item));// Remove selected item
                 s1.nextLine(); // Clear buffer
             }
-            // Option 5: Create shipment and add item to it
-            else if(choice == 5){
+            // Option 4: Create shipment and add item to it
+            else if (choice == 4) {
 
                 // Get shipment details
                 System.out.print("Enter new Shipment ID: ");
@@ -124,7 +132,7 @@ public class TestClass {
                 System.out.print("Enter destination: ");
                 String destination = s1.nextLine();
                 // Create and register shipment
-                Shipment newShipment = new Shipment(newShipmentID, Shipment.Status.PENDING, destination );
+                Shipment newShipment = new Shipment(newShipmentID, Shipment.Status.PENDING, destination);
                 library.createShipment(newShipment);
                 System.out.println("Shipment created successfully!");
                 // Add item to shipment
@@ -135,56 +143,93 @@ public class TestClass {
                 undoStack.push(new Action("ADD_TO_SHIPMENT", itemID));
             }
             // Option 6: View all shipments
-            else if(choice == 6){
+            else if (choice == 5) {
                 library.displayShipments();
+
             }
-            //Option 7: undo item to shipment or catalog
-            else if(choice == 7){
-                if(undoStack.isEmpty()){
+            //Option 6: undo item to shipment or catalog
+            else if (choice == 6) {
+                if (undoStack.isEmpty()) {
                     System.out.println("Nothing to undo.");
                     return;
                 }
-                else if(choice == 8){
+                Action lastAction = undoStack.pop();
+                switch (lastAction.type) {
+                    case "ADD_ITEM":
+                        int idToRemove = (int) lastAction.data;
+                        library.findAndRemoveItem(idToRemove);
+                        System.out.println("Undo: Item addition reversed.");
+                        break;
+                    case "REMOVE_ITEM":
+                        LibraryItem item = (LibraryItem) lastAction.data;
+                        library.addItem(item);
+                        System.out.println("Undo: Item removal reversed.");
+                        break;
 
-                    if(undoStack.isEmpty()){
-                        System.out.println("Nothing to undo.");
-                        return;
-                    }
+                    case "ADD_TO_SHIPMENT":
+                        int itemID = (int) lastAction.data;
+                        library.findAndRemoveItem(itemID);
+                        System.out.println("Undo: Removed item from shipment.");
+                        break;
 
-                    Action lastAction = undoStack.pop();
 
-                    switch(lastAction.type){
-
-                        case "ADD_ITEM":
-                            int idToRemove = (int) lastAction.data;
-                            library.findAndRemoveItem(idToRemove);
-                            System.out.println("Undo: Item addition reversed.");
-                            break;
-
-                        case "REMOVE_ITEM":
-                            LibraryItem item = (LibraryItem) lastAction.data;
-                            library.addItem(item);
-                            System.out.println("Undo: Item removal reversed.");
-                            break;
-
-                        case "ADD_TO_SHIPMENT":
-                            int itemID = (int) lastAction.data;
-                            library.findAndRemoveItem(itemID);
-                            System.out.println("Undo: Removed item from shipment.");
-                            break;
-
-                        default:
-                            System.out.println("Unknown action.");
-                    }
+                    default:
+                        System.out.println("Unknown action.");
                 }
-                
             }
-            //option 8: searching and sorting
-            else if(choice==8){
-                
+            //option 7: searching and sorting
+            else if (choice == 7) {
+                System.out.println("\nSorting Alphabetically using merge sort");
+                List<LibraryItem> sortedItems = SortUtils.mergeSort(library.getAllItems(), SortUtils.compareByTitle);
+                for (LibraryItem item : sortedItems) {
+                    System.out.println(item.getDetails());
+                }
+
+
+                System.out.println("\nSorting Alphabetically using quick sort");
+                SortUtils.quickSort(library.getAllItems(), 0, library.getAllItems().size() - 1, SortUtils.compareByTitle);
+                for (LibraryItem item : library.getAllItems()) {
+                    System.out.println(item.getDetails());
+                }
+//                SortUtils.quickSort(library.getAllItems(),0, library.getAllItems().size()-1, SortUtils.compareByID);
+//                System.out.print("Are you searching for (1) book or (2)video?");
+//                int ans = s1.nextInt();
+//                s1.nextLine();
+//
+//                ArrayList<LibraryItem> filter = new ArrayList<>();
+//
+//                for(LibraryItem item : library.getAllItems()) {
+//                    if (item instanceof Book) {
+//                        filter.add(item);
+//                    }
+//                    
+//                }
+//
+//                int index = SortUtils.binarySearch(library.getAllItems(), )
+//                if(result != null){
+//                    System.out.println("Item found:");
+//                    System.out.println(result);
+//                } else {
+//                    System.out.println("Item not found.");
+//                }
             }
-            // Option 9: Exit program
-            else if(choice == 9){
+
+
+//                System.out.println("\nSorting Shipments by date using merge sort");
+//                ArrayList<Shipment> sortedShipments = SortUtils.mergeSort(library.getItems(), SortUtils.compareByDate);
+//                for(Shipment item: sortedShipments){
+//                    System.out.println(shipment.getDetails());
+//                }
+//
+//                System.out.println("\nSorting Shipments by date using quick sort");
+//                SortUtils.quickSort(library.getAllItems(),0, library.getAllItems().size()-1, SortUtils.compareByDate);
+//                for(Shipment item: library.getAllItems()){
+//                    System.out.println(item.getDetails());
+//                }
+
+
+            // Option 8: Exit program
+            else if (choice == 8) {
                 session = false;
             }
         }
