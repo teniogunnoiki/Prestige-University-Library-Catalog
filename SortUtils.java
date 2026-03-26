@@ -70,8 +70,10 @@ public class SortUtils {
 
             return i + 1;
         }
-    public static <T> int binarySearch(ArrayList<T> list, int key, Comparator<T> comp) {
-
+ public static int binarySearch(
+            ArrayList<LibraryItem> list,
+            int key
+    ) {
         int left = 0;
         int right = list.size() - 1;
 
@@ -79,20 +81,20 @@ public class SortUtils {
 
             int mid = left + (right - left) / 2;
 
-            int result = comp.compare(list.get(mid), target);
+            int midID = list.get(mid).getItemID();
 
-            if (result == 0) {
-                return mid; // found
+            if (midID == key) {
+                return mid;
             }
 
-            if (result < 0) {
+            if (midID < key) {
                 left = mid + 1;
             } else {
                 right = mid - 1;
             }
         }
 
-        return -1; // not found
+        return -1;
     }
     public static Comparator<LibraryItem> compareByTitle = (a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle());
     public static Comparator<LibraryItem> compareByID = (a, b) -> Integer.compare(a.getItemID(), b.getItemID());
