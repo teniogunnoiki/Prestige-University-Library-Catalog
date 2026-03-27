@@ -33,17 +33,17 @@ public class TestClass {
         while (session) {
 
             // Display menu options
-            System.out.println("");
+           System.out.println("");
             System.out.println("Welcome to Prestige University Library Catalog!");
             System.out.println("Main Menu: ");
             System.out.println("1. Display current library");
             System.out.println("2. Add item");
             System.out.println("3. Remove item");
-            System.out.println("5. Create Shipment");
-            System.out.println("6. View Shipments");
-            System.out.println("7. Undo Last Action");
-            System.out.println("8. Search for an Item or Shipment");
-            System.out.println("9. Exit");
+            System.out.println("4. Create Shipment");
+            System.out.println("5. View Shipments");
+            System.out.println("6. Undo Last Action");
+            System.out.println("7. Search for an Item or Shipment");
+            System.out.println("8. Exit");
             System.out.print("Enter menu option: ");
 
             int choice = s1.nextInt();
