@@ -40,7 +40,7 @@ public class LibraryCatalog<T extends LibraryItem> {
 
     public void displayShipments() {
         for (Shipment s : shipments) {
-            System.out.println(s);
+            System.out.println(s.getDetails());
         }
     }
 
