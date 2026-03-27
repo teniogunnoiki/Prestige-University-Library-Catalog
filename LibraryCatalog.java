@@ -25,6 +25,12 @@ public class LibraryCatalog<T extends LibraryItem> {
         }
     }
 
+    public ArrayList<T> getAllItems(){
+        return items;
+    }
+
+    
+
     public void findAndRemoveItem(int item) {
         boolean found = items.removeIf(s1 -> s1.getItemID() == item);
         if (found) {
@@ -61,6 +67,15 @@ public class LibraryCatalog<T extends LibraryItem> {
         }
         return null;
     }
+    
+    public void displayItemsInShipment(int shipmentID) {
+    Shipment shipment = findShipment(shipmentID);
+    if (shipment == null) {
+        System.out.println("Shipment not found.");
+        return;
+    }
+    shipment.displayItems();
+}
 
     public void addItemToShipment(int itemID, int shipmentID) {
         Shipment shipment = findShipment(shipmentID);

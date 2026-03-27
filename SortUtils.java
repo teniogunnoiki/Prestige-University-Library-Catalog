@@ -4,11 +4,11 @@ import java.util.Comparator;
 public class SortUtils {
 
     public static <T> ArrayList<T> mergeSort(ArrayList<T> tArrayList, Comparator<T> comp){
-        //Base case: if list has only one item
+        
         if(tArrayList.size()<=1 ){
             return tArrayList;
         }
-        //split array into two halves
+        
         int mid = tArrayList.size()/2;
         ArrayList<T> left = new ArrayList<>(tArrayList.subList(0,mid));
         ArrayList<T> right = new ArrayList<>(tArrayList.subList(mid,tArrayList.size()));
@@ -70,7 +70,7 @@ public class SortUtils {
 
             return i + 1;
         }
-    public static <T> int binarySearch(ArrayList<T> list, int key, Comparator<T> comp) {
+    public static <T> int binarySearch(ArrayList<T> list, int key, Comparator<T> comp, T target) {
 
         int left = 0;
         int right = list.size() - 1;
@@ -82,7 +82,7 @@ public class SortUtils {
             int result = comp.compare(list.get(mid), target);
 
             if (result == 0) {
-                return mid; // found
+                return mid; 
             }
 
             if (result < 0) {
@@ -92,11 +92,11 @@ public class SortUtils {
             }
         }
 
-        return -1; // not found
+        return -1; 
     }
     public static Comparator<LibraryItem> compareByTitle = (a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle());
     public static Comparator<LibraryItem> compareByID = (a, b) -> Integer.compare(a.getItemID(), b.getItemID());
-    // Shipment Comparators
+    
     public static Comparator<Shipment> compareByDate = (a, b) -> a.getShipmentDate().compareTo(b.getShipmentDate());
     public static Comparator<Shipment> compareBySID = (a, b) -> Integer.compare(a.getShipmentID(), b.getShipmentID());
 

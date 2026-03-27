@@ -50,5 +50,9 @@ public class Book extends LibraryItem{
                 + category  + " | Avalibility: " + available;
 
     }
+    @Override
+    public String toString() {  
+    return getDetails();
+}
 }
  
