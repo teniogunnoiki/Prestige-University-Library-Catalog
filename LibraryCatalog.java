@@ -6,7 +6,7 @@ public class LibraryCatalog<T extends LibraryItem> {
     private ArrayList<Shipment> shipments = new ArrayList<>();
     private ArrayList<Warehouse> warehouses = new ArrayList<>();
 
-    public LibraryCatalog(){this.librarySession = "Unknown";}
+    public LibraryCatalog(){this.librarySession = "User Mode";}
     public LibraryCatalog(String librarySession) {
         this.librarySession = librarySession;
     }
@@ -25,6 +25,12 @@ public class LibraryCatalog<T extends LibraryItem> {
         }
     }
 
+    public ArrayList<T> getAllItems(){
+        return items;
+    }
+
+
+
     public void findAndRemoveItem(int item) {
         boolean found = items.removeIf(s1 -> s1.getItemID() == item);
         if (found) {
@@ -40,7 +46,7 @@ public class LibraryCatalog<T extends LibraryItem> {
 
     public void displayShipments() {
         for (Shipment s : shipments) {
-            System.out.println(s.getDetails());
+            System.out.println(s.toString());
         }
     }
 
@@ -62,6 +68,15 @@ public class LibraryCatalog<T extends LibraryItem> {
         return null;
     }
 
+    public void displayItemsInShipment(int shipmentID) {
+        Shipment shipment = findShipment(shipmentID);
+        if (shipment == null) {
+            System.out.println("Shipment not found.");
+            return;
+        }
+        shipment.displayItems();
+    }
+
     public void addItemToShipment(int itemID, int shipmentID) {
         Shipment shipment = findShipment(shipmentID);
         if (shipment == null) {
@@ -78,4 +93,14 @@ public class LibraryCatalog<T extends LibraryItem> {
         }
         System.out.println("Item not found in library.");
     }
-}
+
+    public Shipment removeShipment(int shipmentID) {
+       Shipment shipment = findShipment(shipmentID);
+       if(shipment ==null){
+           System.out.println("Shipment not found.");
+       }
+       shipments.remove(shipment);
+       System.out.println("Shipment removed.");
+        return shipment;
+    }
+    }
