@@ -4,11 +4,11 @@ import java.util.Comparator;
 public class SortUtils {
 
     public static <T> ArrayList<T> mergeSort(ArrayList<T> tArrayList, Comparator<T> comp){
-        //Base case: if list has only one item
+
         if(tArrayList.size()<=1 ){
             return tArrayList;
         }
-        //split array into two halves
+
         int mid = tArrayList.size()/2;
         ArrayList<T> left = new ArrayList<>(tArrayList.subList(0,mid));
         ArrayList<T> right = new ArrayList<>(tArrayList.subList(mid,tArrayList.size()));
@@ -48,29 +48,29 @@ public class SortUtils {
 
             quickSort(list, low, pivotIndex - 1, comp);
             quickSort(list, pivotIndex + 1, high, comp);
+        }
+    }
+    private static <T> int partition(ArrayList<T> list, int low, int high, Comparator<T> comp) {
+        T pivot = list.get(high);
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (comp.compare(list.get(j), pivot) <= 0) {
+                i++;
+
+                T temp = list.get(i);
+                list.set(i, list.get(j));
+                list.set(j, temp);
             }
         }
-        private static <T> int partition(ArrayList<T> list, int low, int high, Comparator<T> comp) {
-            T pivot = list.get(high);
-            int i = low - 1;
 
-            for (int j = low; j < high; j++) {
-                if (comp.compare(list.get(j), pivot) <= 0) {
-                    i++;
+        T temp = list.get(i + 1);
+        list.set(i + 1, list.get(high));
+        list.set(high, temp);
 
-                    T temp = list.get(i);
-                    list.set(i, list.get(j));
-                    list.set(j, temp);
-                }
-            }
-
-            T temp = list.get(i + 1);
-            list.set(i + 1, list.get(high));
-            list.set(high, temp);
-
-            return i + 1;
-        }
- public static int binarySearch(
+        return i + 1;
+    }
+    public static int binarySearch(
             ArrayList<LibraryItem> list,
             int key
     ) {
@@ -98,10 +98,9 @@ public class SortUtils {
     }
     public static Comparator<LibraryItem> compareByTitle = (a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle());
     public static Comparator<LibraryItem> compareByID = (a, b) -> Integer.compare(a.getItemID(), b.getItemID());
-    // Shipment Comparators
+
     public static Comparator<Shipment> compareByDate = (a, b) -> a.getShipmentDate().compareTo(b.getShipmentDate());
     public static Comparator<Shipment> compareBySID = (a, b) -> Integer.compare(a.getShipmentID(), b.getShipmentID());
 
 
 }
-
