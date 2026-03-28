@@ -7,8 +7,8 @@ public class Warehouse {
     private String location;
     private List<Shipment> shipments;
 
-     public Warehouse(){
-        this.warehouseID = 000;
+    public Warehouse(){
+        this.warehouseID = 0;
         this.location = "Unknown";
         this.shipments = new ArrayList<>();
     }
@@ -42,7 +42,7 @@ public class Warehouse {
     public List<Shipment> getShipments() {
         return shipments;
     }
-    
+
 
 
 }
