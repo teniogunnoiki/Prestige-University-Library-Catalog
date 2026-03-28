@@ -6,61 +6,64 @@ import java.util.ArrayList;
 public class TestClass {
 
     public static void main(String[] args) {
-        Scanner s1 = new Scanner(System.in);  // Scanner for user input
+        Scanner s1 = new Scanner(System.in);
         // Controls main program loop
         boolean session = true;
 
         // Create library catalog in admin mode
-        LibraryCatalog<LibraryItem> library = new LibraryCatalog("Admin Mode");
+        LibraryCatalog<LibraryItem> library = new LibraryCatalog<>("Admin Mode");
         Stack<Action> undoStack = new Stack<>();
         Warehouse warehouse = new Warehouse();
 
         // Add initial book items to catalog
         library.addItem(new Book(1001, "Five Dialogues", "Plato", "2002", "Physical"));
-        library.addItem(new Book(1002, "Introduction to Programming", "Daniel Liang", "1998", "Digital"));
+        library.addItem(new Book(1005, "Introduction to Programming", "Daniel Liang", "1998", "Digital"));
         library.addItem(new Book(1003, "Modern Operating Systems", "Andrew S. Tanenbaum", "1992", "Digital"));
         library.addItem(new Book(1407, "The Essential Bible Companion", "John H Walton", "2006", "Digital"));
         library.addItem(new Book(1009, "Nicomachean Ethics", "Aristotle", "2009", "Physical"));
 
         // Add initial video items to catalog
         library.addItem(new Video(1004, "Harriet", 125));
-        library.addItem(new Video(1005, "Microsoft Excel Training 2017", 55));
+        library.addItem(new Video(1011, "Microsoft Excel Training 2017", 55));
         library.addItem(new Video(1006, "Hidden Figures", 127));
-        library.addItem(new Video(1008, "Charlotte's Web", 97));
+        library.addItem(new Video(1308, "Charlotte's Web", 97));
         library.addItem(new Video(1010, "Harry Potter and the Sorcerer's Stone", 152));
 
         // Main menu loop
         while (session) {
 
             // Display menu options
-           System.out.println("");
+            System.out.println("");
             System.out.println("Welcome to Prestige University Library Catalog!");
             System.out.println("Main Menu: ");
             System.out.println("1. Display current library");
             System.out.println("2. Add item");
             System.out.println("3. Remove item");
-            System.out.println("4. Create Shipment");
-            System.out.println("5. View Shipments");
-            System.out.println("6. Undo Last Action");
-            System.out.println("7. Search for an Item or Shipment");
-            System.out.println("8. Exit");
+            System.out.println("4. Create or add to a Shipment");
+            System.out.println("5. Remove Shipment");
+            System.out.println("6. View Shipments");
+            System.out.println("7. Undo Last Action");
+            System.out.println("8. Search for an Item or Shipment");
+            System.out.println("9. View Performance");
+            System.out.println("0. Exit");
             System.out.print("Enter menu option: ");
 
             int choice = s1.nextInt();
-            s1.nextLine(); // Clear input buffer
+            s1.nextLine();
 
             // Option 1: Display and sort library
             if (choice == 1) {
-                System.out.println("Displaying all books as entered: \n");
+                System.out.println("Displaying all Items as entered: \n");
                 library.displayLibrary();
 
                 System.out.println("\nDisplaying by type: ");
+                library.sortLibrary();
                 for (LibraryItem item : library.getAllItems()) {
                     if (item instanceof Book) {
-                        item.getDetails();
+                        System.out.println(item.getDetails());
                     }
                     if (item instanceof Video) {
-                        item.getDetails();
+                        System.out.println(item.getDetails());
                     }
                 }
             }
@@ -112,7 +115,7 @@ public class TestClass {
             // Option 3: Remove item by ID
             else if (choice == 3) {
                 System.out.println("");
-                library.displayLibrary();
+                library.displayLibrary(); //displays library to see items
 
                 System.out.println("\nWhich Item would you like to remove by ID: ");
                 int item = s1.nextInt();
@@ -123,87 +126,151 @@ public class TestClass {
             }
             // Option 4: Create shipment and add item to it
             else if (choice == 4) {
+                System.out.println("Create Shipment or Add item to existing Shipment");
+                System.out.println("1. Create Shipment");
+                System.out.println("2. Add Item to Existing Shipment");
+                System.out.println("0. Exit");
+                int choice1 = s1.nextInt();
 
-                // Get shipment details
-                System.out.print("Enter new Shipment ID: ");
-                int newShipmentID = s1.nextInt();
-                s1.nextLine(); // Clear buffer
+                System.out.print("");
+                if (choice1 == 1) {
 
-                System.out.print("Enter destination: ");
-                String destination = s1.nextLine();
-                // Create and register shipment
-                Shipment newShipment = new Shipment(newShipmentID, Shipment.Status.PENDING, destination);
-                library.createShipment(newShipment);
-                System.out.println("Shipment created successfully!");
-                // Add item to shipment
-                System.out.print("Enter Item ID to add: ");
-                int itemID = s1.nextInt();
+
+                    // Get shipment details
+                    System.out.print("Enter new Shipment ID: ");
+                    int newShipmentID = s1.nextInt();
+                    s1.nextLine();
+
+                    System.out.print("Enter destination: ");
+                    String destination = s1.nextLine();
+
+                    Shipment newShipment = new Shipment(newShipmentID, Shipment.DEFAULT_STATUS, destination);
+                    library.createShipment(newShipment);
+                    System.out.println("Shipment created successfully!");
+                    // Add item to shipment
+                    library.displayLibrary();
+                    System.out.print("Enter Item ID to add: ");
+                    int itemID = s1.nextInt();
+                    s1.nextLine();
+                    library.addItemToShipment(itemID, newShipmentID);
+                    undoStack.push(new Action("ADD_TO_SHIPMENT", itemID));
+
+                } else if (choice1 == 2) {
+
+                    library.displayShipments();
+                    System.out.println("Enter Shipment ID - ");
+                    int shipmentID = s1.nextInt();
+                    library.displayLibrary();
+                    System.out.println("Enter Item ID to add to shipment - ");
+                    int itemID = s1.nextInt();
+                    library.addItemToShipment(itemID, shipmentID);
+                    System.out.println("Item added to Shipment:" + shipmentID);
+                    undoStack.push(new Action("ADD_TO_SHIPMENT", itemID));
+
+                } else if (choice1 == 0) {
+                    session = false;
+
+                }
+            }
+            //Option 5: Delete shipment
+            else if (choice == 5) {
+                System.out.print("Enter Shipment ID to remove: ");
+                int shipID = s1.nextInt();
                 s1.nextLine();
-                library.addItemToShipment(itemID, newShipmentID);
-                undoStack.push(new Action("ADD_TO_SHIPMENT", itemID));
+                Shipment removed = library.removeShipment(shipID);
+                if(removed != null){
+                    undoStack.push(new Action("REMOVE_SHIPMENT", removed));
+                }
+
             }
             // Option 6: View all shipments
-            else if (choice == 5) {
-                library.displayShipments();
+            else if (choice == 6) {
+
+                System.out.println("What do you want to view? ");
+                System.out.println("1. View Library");
+                System.out.println("2. View Shipments");
+                System.out.println("3. View Items in Shipments");
+                int choice2 = s1.nextInt();
+
+                if (choice2 == 1)
+                    library.displayLibrary();
+
+                else if (choice2 == 2)
+                    library.displayShipments();
+
+                else if (choice2 == 3) {
+                    library.displayShipments(); // show them the list first
+                    System.out.print("Enter Shipment ID to view items: ");
+                    int shipmentID = s1.nextInt();
+                    library.displayItemsInShipment(shipmentID);
+                }
+
 
             }
-            //Option 6: undo item to shipment or catalog
-            else if (choice == 6) {
+            //Option 7: undo item to shipment or catalog
+            else if (choice == 7) {
                 if (undoStack.isEmpty()) {
                     System.out.println("Nothing to undo.");
                     return;
                 }
                 Action lastAction = undoStack.pop();
-                switch (lastAction.type) {
+                switch (lastAction.getType()) {
                     case "ADD_ITEM":
-                        int idToRemove = (int) lastAction.data;
+                        int idToRemove = (int) lastAction.getData();
                         library.findAndRemoveItem(idToRemove);
                         System.out.println("Undo: Item addition reversed.");
                         break;
                     case "REMOVE_ITEM":
-                        LibraryItem item = (LibraryItem) lastAction.data;
+                        LibraryItem item = (LibraryItem) lastAction.getData();
                         library.addItem(item);
                         System.out.println("Undo: Item removal reversed.");
                         break;
 
                     case "ADD_TO_SHIPMENT":
-                        int itemID = (int) lastAction.data;
+                        int itemID = (int) lastAction.getData();
                         library.findAndRemoveItem(itemID);
                         System.out.println("Undo: Removed item from shipment.");
                         break;
-
+                    case "REMOVE_SHIPMENT":
+                        Shipment shipID = (Shipment) lastAction.getData();
+                        library.createShipment(shipID);
+                        System.out.println("Undo: Shipment restored.");
+                        break;
 
                     default:
                         System.out.println("Unknown action.");
                 }
             }
-            //option 7: searching and sorting
-            else if (choice == 7) {
-              System.out.println("\nSorting Alphabetically using merge sort");
+            //option 8: searching and sorting
+            else if (choice == 8) {
+                System.out.println("Displaying all Items as entered:");
+                library.displayLibrary();
+
+                System.out.println("\nSorting Alphabetically using merge sort");
                 List<LibraryItem> sortedItems = SortUtils.mergeSort(library.getAllItems(), SortUtils.compareByTitle);
                 for (LibraryItem item : sortedItems) {
                     System.out.println(item.getDetails());
                 }
 
-
-                System.out.println("\nSorting Alphabetically using quick sort");
-                SortUtils.quickSort(library.getAllItems(), 0, library.getAllItems().size() - 1, SortUtils.compareByTitle);
+                System.out.println("\nSorting by ID using quick sort");
+                SortUtils.quickSort(library.getAllItems(), 0, library.getAllItems().size() - 1, SortUtils.compareByID);
                 for (LibraryItem item : library.getAllItems()) {
                     System.out.println(item.getDetails());
                 }
+
 
                 SortUtils.quickSort(library.getAllItems(), 0, library.getAllItems().size() - 1, SortUtils.compareByID);
                 System.out.print("Are you searching for (1) book or (2)video? Enter an integer: ");
                 int ans = s1.nextInt();
                 s1.nextLine();
                 ArrayList<LibraryItem> filter = new ArrayList<>();
-                if(ans ==1) {
+                if (ans == 1) {
                     for (LibraryItem item : library.getAllItems()) {
                         if (item instanceof Book) {
                             filter.add(item);
                         }
                     }
-                }else if(ans == 2) {
+                } else if (ans == 2) {
                     for (LibraryItem item : library.getAllItems()) {
                         if (item instanceof Video) {
                             filter.add(item);
@@ -216,14 +283,41 @@ public class TestClass {
 
                 int index = SortUtils.binarySearch(filter, ans);
                 if (index != -1) {
-                    System.out.println("Found: " + library.getAllItems().get(index));
+                    System.out.println("Found: " + filter.get(index));
                 } else {
                     System.out.println("Item not found.");
                 }
+            }
+
+            //Option 9: performance testing
+            else if (choice == 9) {
+                //generates large dataset of book objects
+                ArrayList<LibraryItem> test = new ArrayList<>();
+                for (int i = 0; i < 10100; i++) {
+                    test.add(new Book(i, "Title" + i, "Author", "2026", "Digital"));
+                }
+                //measuring custom merge sort
+                long start = System.nanoTime();
+                ArrayList<LibraryItem> sorted = SortUtils.mergeSort(test, SortUtils.compareByID);
+                long end = System.nanoTime();
+                System.out.println("Merge Sort Time: " + ((end - start)/1000000.0) + " ms");
+
+                //measuring custom quick sort
+                long start2 = System.nanoTime();
+                SortUtils.quickSort(library.getAllItems(), 0, library.getAllItems().size() - 1, SortUtils.compareByID);
+                long end2 = System.nanoTime();
+                System.out.println("Quick Sort Time: " + ((end2 - start2)/1000000.0) + " ms");
+
+                //measuring java's built-in sort
+                long start3 =  System.nanoTime();
+                test.sort(SortUtils.compareByID);
+                long end3 =  System.nanoTime();
+                System.out.println("Java Sort Time: " + ((end3- start3)/1000000.0) + " ms");
 
             }
-            // Option 8: Exit program
-            else if (choice == 8) {
+
+            // Option 0: Exit program
+            else if (choice == 0) {
                 session = false;
             }
         }
