@@ -48,5 +48,19 @@ public abstract class LibraryItem implements Comparable<LibraryItem>{
         }
         return Integer.compare(this.itemID, other.itemID);
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        LibraryItem other = (LibraryItem) obj;
+        return this.itemID == other.itemID;
+    }
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(itemID);
+    }
 
 }
