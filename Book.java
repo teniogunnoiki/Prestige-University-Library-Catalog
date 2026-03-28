@@ -47,8 +47,12 @@ public class Book extends LibraryItem{
     @Override
     public String getDetails(){
         return "Item ID: " + getItemID()+ " | Title: " + getTitle() + " | Author: " + author + " | Publish Date: " + publishDate + "| Category: "
-                + category  + " | Avalibility: " + available;
+                + category  + " | Availability: " + available;
 
     }
+    @Override
+    public String toString() {
+        return getDetails();
+    }
 }
- 
+
